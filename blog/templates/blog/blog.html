@@ -1,0 +1,20 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+    <p> Blog: {{ blog }} </p>
+
+    <p> Entries: </p>
+    <ul>
+        {% for entry in entries %}
+        <li>
+            <p> {{ entry.date_added|date:"M d, Y H:I" }} </p>
+            <p> {{ entry.textentry }} </p>
+        </li>
+        {% empty %}
+        <li>There are no entries for this topic yet.</li>
+        {% endfor %}
+    </ul>
+
+
+ {% endblock content %} 
