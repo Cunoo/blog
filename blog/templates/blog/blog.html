@@ -4,7 +4,8 @@
 
     <p> Blog: {{ blog }} </p>
 
-    <p> Entries: </p>
+    <p> Entries blog: </p>
+    <p><a href="{% url 'blog:new_entry' blog.id %}"> Add new blog</a></p>
     <ul>
         {% for entry in entries %}
         <li>
@@ -17,4 +18,4 @@
     </ul>
 
 
- {% endblock content %} 
+ {% endblock content %}

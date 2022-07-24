@@ -3,18 +3,19 @@
 
 {% block content %}
 
-<p>BLOGS:</p>
+    <p>BLOGS:</p>
 
-<ul>
-    {% for blog in blogs %}
-    <li>
-        <a href="{% url 'blog:blog' blog.id %}"> {{ blog }} </a>
-    </li>
-    {% empty %}
-    <li>topic have been added yet.</li>
-    {% endfor %}
+    <ul>
+        {% for blog in blogs %}
+        <li>
+            <a href="{% url 'blog:blog' blog.id %}"> {{ blog }} </a>
+        </li>
+        {% empty %}
+        <li>topic have been added yet.</li>
+        {% endfor %}
+    </ul>
 
-</ul>
+    <a href="{% url 'blog:new_blog' %}"> Add new blog</a>
 
 
 {% endblock content %}
