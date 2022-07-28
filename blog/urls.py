@@ -10,4 +10,5 @@ urlpatterns = [
     path('blogs/<int:blog_id>/', views.blog, name='blog'), # view given blog
     path('new_blog/', views.new_blog, name='new_blog'), # create new blog in html
     path('new_entry/<int:blog_id>/', views.new_entry, name='new_entry'), # for adding new entry in html
+    path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'), # edit entry based on id 
 ]

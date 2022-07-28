@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render, reverse
-from .models import BlogPost
+from django.urls import is_valid_path
+from .models import BlogPost, BlogEntry
 from .forms import BlogForm, EntryForm
 
 
@@ -53,3 +54,20 @@ def new_entry(request, blog_id):
     #display a blank or invalid form
     context = {'topic': topic, 'form': form}
     return render(request, 'blog/new_entry.html', context)
+
+
+def edit_entry(request, entry_id):
+    entry = BlogEntry.objects.get(id=entry_id)
+    topic = entry.topic
+    if request.method != 'POST':
+        form = EntryForm(instance=entry) #   initial reqquest, pre-fill form with the current entry
+    else:
+        #   post data submittd; proccess data
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blog:blog', blog_id=topic.id)
+
+    context = {'entry': entry, 'topic': topic, 'form': form}
+    
+    return render(request, 'blog/edit_entry.html', context)
