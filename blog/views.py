@@ -2,34 +2,42 @@ from django.shortcuts import redirect, render, reverse
 from django.urls import is_valid_path
 from .models import BlogPost, BlogEntry
 from .forms import BlogForm, EntryForm
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 
 def index(request):
     return render(request, 'blog/index.html')
 
-
+@login_required
 def blogs(request):
-    blogs = BlogPost.objects.order_by('date_added')
+    
+    blogs = BlogPost.objects.filter(owner=request.user).order_by('date_added')
     context = {'blogs': blogs}
     
     return render(request, 'blog/blogs.html', context)
 
-
+@login_required
 def blog(request, blog_id):
     blog = BlogPost.objects.get(id=blog_id) # show blogpost by id
+    if blog.owner != request.user: #   make sure the topic belongs to the current user
+        raise Http404
+
     entries = blog.blogentry_set.order_by("-date_added")    # that - symbol reverse the entries
     context = {'blog': blog, 'entries': entries}
 
     return render(request, 'blog/blog.html', context)
 
-
+@login_required
 def new_blog(request):
     if request.method != 'POST':
         form = BlogForm()   # no data submited; create a blank form
     else:
         form = BlogForm(data=request.POST)  # use post when you want r-w
         if form.is_valid(): # check that all required fields have been filled in
-            form.save() # write from form to the database
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
             return redirect('blog:blogs')
         
     context = {'form': form}
@@ -37,7 +45,7 @@ def new_blog(request):
     return render(request, 'blog/new_blog.html', context)   # this execute when is blank or valid
 
 
-
+@login_required
 def new_entry(request, blog_id):
     topic = BlogPost.objects.get(id=blog_id)
     if request.method != 'POST':
@@ -55,10 +63,15 @@ def new_entry(request, blog_id):
     context = {'topic': topic, 'form': form}
     return render(request, 'blog/new_entry.html', context)
 
-
+@login_required
 def edit_entry(request, entry_id):
     entry = BlogEntry.objects.get(id=entry_id)
     topic = entry.topic
+
+    topic = entry.topic
+    if topic.owner != request.user:
+        raise Http404
+
     if request.method != 'POST':
         form = EntryForm(instance=entry) #   initial reqquest, pre-fill form with the current entry
     else:
