@@ -1,7 +1,7 @@
 {% extends "blog/base.html" %}
 {% block content %}
     {% if form.errors %}
-        <p>Your uysername and password didn't match. please try again.</p>
+        <p>Your username and password didn't match. please try again.</p>
 
     {% endif %}
 
@@ -9,7 +9,7 @@
         {% csrf_token %}
         {{form.as_p}}
 
-        <button name="submit"> Log in</button>
+        <button name="submit" class="btn btn-primary"> Log in</button>
         <input type="hidden" name="next" value="{% url 'blog:index' %}"/>
     </form>
 {% endblock content %}

@@ -1,4 +1,26 @@
-{% extends "blog/base.html" %} 
-{% block content %}
-<H1>BLOG</H1>
-{% endblock content %}
+{% extends "blog/base.html" %}
+
+{% block page_header %}
+    {% if user.is_authenticated %}
+
+        <div class="jumbotron">
+            <h1 class="display-3"> Blog</h1>
+
+            <p class="lead">Make your own topic with entry !</p>
+
+            <a class="btn btn-lg btn-primary" href="{% url  'blog:new_blog' %}"
+                role="button"> new blog &raquo;</a>
+        </div>
+
+    {% else %}
+        <div class="jumbotron">
+            <h1 class="display-3"> Blog</h1>
+    
+            <p class="lead">Make your own blog. for example what you done today. Page is private, no one can see your post</p>
+    
+            <a class="btn btn-lg btn-primary" href="{% url  'users:register' %}"
+                role="button"> register &raquo;</a>
+        </div>
+    {% endif %}
+    
+{% endblock page_header %}

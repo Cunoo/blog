@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$l-ajq#js8nh(pdv_gzza=lv=6!qwz%jt9wu#r7sf0(&1or9yl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     # my apps
     'blog',
     'users',
+
+    #bootstrap
+    'bootstrap4',
 
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,14 +1,59 @@
-<p>
-    <a href="{% url 'blog:index' %}"> blog</a> 
-    <a href="{% url 'blog:blogs' %}">blogs</a>
-    {% if user.is_authenticated %}
-        Hello {{user.username}}
-        <a href ="{% url 'users:logout' %}">Log out</a>
-    {% else %}
-        <a href="{% url 'users:register' %}">Register</a>
-        <a href="{% url 'users:login' %}"> Log in</a>
-    {% endif %}    
-</p>
+
+{% load bootstrap4 %}
 
 
-{% block content %}{% endblock content %}
+<!doctype html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Blog for yourself</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery='full' %}
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'blog:index' %}">Blog</a>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:blogs' %}">Blogs</a>
+                </li>   
+
+                <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:register' %}"> Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:login' %}"> Log in</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        {% if user.is_authenticated %}
+        <span class="navbar-text"> Hello {{ user.username }}.</span>
+        {% endif %}
+
+        <main role="main" class="container">
+            <div class="pb-2 mb-2 border-bottom">
+                {% block page_header %} {% endblock page_header %}
+            </div>
+            <div>
+                {% block content %} {% endblock content %}
+            </div>
+        </main>
+
+
+
+
+    </body>
+</html>
